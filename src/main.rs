@@ -7,7 +7,7 @@ use serenity::{
     Client,
 };
 
-static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i:\bi'?m\s+)([\s\S]+)").unwrap());
+static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i:\bi['’]?m\s+)([\s\S]+)").unwrap());
 
 struct Handler;
 

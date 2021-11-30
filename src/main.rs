@@ -19,13 +19,16 @@ impl EventHandler for Handler {
         }
         if let Some(caps) = RE.captures(&msg.content) {
             if let Some(mat) = caps.get(1) {
-                let _ = msg
+                if let Err(why) = msg
                     .channel_id
                     .say(
                         ctx.http,
                         format!("Hi {}, nice to meet you, I'm mip!", mat.as_str()),
                     )
-                    .await;
+                    .await
+                {
+                    eprintln!("{:?}", why);
+                }
             }
         }
     }

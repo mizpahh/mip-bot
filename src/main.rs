@@ -29,6 +29,14 @@ impl EventHandler for Handler {
             }
         }
     }
+
+    async fn ready(&self, _ctx: Context, _data_about_bot: Ready) {
+        println!("ready");
+    }
+
+    async fn cache_ready(&self, _ctx: Context, _guilds: Vec<GuildId>) {
+        println!("cache_ready");
+    }
 }
 
 #[tokio::main]

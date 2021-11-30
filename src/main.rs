@@ -3,11 +3,11 @@ use regex::Regex;
 use serenity::{
     async_trait,
     client::{Context, EventHandler},
-    model::channel::Message,
+    model::{channel::Message, gateway::Ready, id::GuildId},
     Client,
 };
 
-static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i:\b(?:i'm|im)\s+)([\s\S]+)").unwrap());
+static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?i:\bi'?m\s+)([\s\S]+)").unwrap());
 
 struct Handler;
 

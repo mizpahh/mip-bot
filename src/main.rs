@@ -14,7 +14,7 @@ struct Handler;
 #[async_trait]
 impl EventHandler for Handler {
     async fn message(&self, ctx: Context, msg: Message) {
-        if msg.author.id == ctx.cache.current_user_id().await {
+        if msg.author.bot {
             return;
         }
         if let Some(caps) = RE.captures(&msg.content) {

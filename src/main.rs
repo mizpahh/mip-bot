@@ -40,8 +40,15 @@ impl EventHandler for Handler {
         );
     }
 
-    async fn cache_ready(&self, _ctx: Context, _guilds: Vec<GuildId>) {
+    async fn cache_ready(&self, ctx: Context, guilds: Vec<GuildId>) {
         println!("cache_ready");
+        let mut guild_names = Vec::with_capacity(guilds.len());
+        for guild_id in guilds {
+            if let Some(name) = guild_id.name(&ctx).await {
+                guild_names.push(name);
+            }
+        }
+        println!("guilds: {:?}", guild_names);
     }
 }
 

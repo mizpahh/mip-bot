@@ -1,9 +1,12 @@
+use std::{thread, time::Duration};
+
 use once_cell::sync::Lazy;
 use regex::Regex;
 use serenity::{
     async_trait,
     client::{Context, EventHandler},
     model::{channel::Message, gateway::Ready, id::GuildId},
+    prelude::GatewayIntents,
     Client,
 };
 
@@ -44,7 +47,7 @@ impl EventHandler for Handler {
         println!("cache_ready");
         let mut guild_names = Vec::with_capacity(guilds.len());
         for guild_id in guilds {
-            if let Some(name) = guild_id.name(&ctx).await {
+            if let Some(name) = guild_id.name(&ctx) {
                 guild_names.push(name);
             }
         }
@@ -52,11 +55,24 @@ impl EventHandler for Handler {
     }
 }
 
+async fn start_bot() -> Result<(), Box<dyn std::error::Error>> {
+    let mut client = Client::builder(
+        include_str!("credentials"),
+        GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT,
+    )
+    .event_handler(Handler)
+    .await?;
+    client.start().await?;
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut client = Client::builder(std::env!("DISCORD_TOKEN"))
-        .event_handler(Handler)
-        .await?;
-    client.start().await?;
+    let mut sleep_secs = 4;
+    while let Err(e) = start_bot().await {
+        println!("error starting bot: {:?}", e);
+        thread::sleep(Duration::from_secs(sleep_secs));
+        sleep_secs *= 2;
+    }
     Ok(())
 }

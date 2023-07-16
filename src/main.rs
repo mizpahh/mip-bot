@@ -26,7 +26,7 @@ impl EventHandler for Handler {
                     .channel_id
                     .say(
                         ctx.http,
-                        format!("Hi {}, nice to meet you, I'm mip!", mat.as_str()),
+                        format!("# Hi {}, nice to meet you, I'm mip!", mat.as_str()),
                     )
                     .await
                 {
